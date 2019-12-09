@@ -22,6 +22,8 @@ HINSTANCE hInst;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
+LRESULT CALLBACK KeyboardCallback(int code, WPARAM wParam, LPARAM lParam);
+
 int isInvalidBase(int base) {
     return (!base || base < 2 || base > 36);
 }
@@ -107,6 +109,8 @@ int CALLBACK WinMain(
 
         return 1;
     }
+    printf("hooking...\n");
+    SetWindowsHookEx(WH_KEYBOARD, KeyboardCallback, hInstance, GetCurrentProcessId());
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
@@ -123,7 +127,7 @@ int CALLBACK WinMain(
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     PAINTSTRUCT ps;
     HDC hdc;
-    static HWND hWndBase1, hWndBase2, hWndValue1, hWndValue2, hwndButton2, hwndButton1, hwndButton3;
+    static HWND hWndBase1, hWndBase2, hWndValue1, hWndValue2, hwndButton1, hwndButton2, hwndButton3;
     static TCHAR response[100] = {0};
     static int x = 10;
     static int y = 10;
@@ -268,4 +272,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     }
 
     return 0;
+}
+
+LRESULT CALLBACK KeyboardCallback(int code, WPARAM wParam, LPARAM lParam) {
+    printf("meow\n");
+    return CallNextHookEx(0, code, wParam, lParam);
 }

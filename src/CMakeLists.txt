@@ -3,4 +3,4 @@ project(MyFirstC C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(MyFirstC WIN32 main.c convert.h convert.c icon.res)
+add_executable(MyFirstC main.c convert.h convert.c icon.res)
